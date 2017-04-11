@@ -20,8 +20,8 @@ function Vehicle(x, y) {
 
         // weighting all the forces
         separateForce.mult(slider1.value());
-        alignForce.mult(slider1.value());
-        cohesionForce.mult(slider2.value());
+        alignForce.mult(slider2.value());
+        cohesionForce.mult(slider3.value());
         //seekForce.mult(slider2.value());
 
         // apply all the force vectors to the acceleration
