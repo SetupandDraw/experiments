@@ -1,5 +1,9 @@
-// in progress implementation of a flocking system based on The Nature of Code by Daniel Shiffman
-// http://natureofcode.com
+/*
+In progress implementation of a flocking system based on The Nature of Code by Daniel Shiffman
+http://natureofcode.com
+Simulating group behaviors by combining multiple steering behaviors according to local interactions between vehicles.
+more: Craig  Reynolds: http://www.red3d.com/cwr/steer/
+*/
 
 // Vehicle object
 function Vehicle(x, y) {
@@ -13,19 +17,19 @@ function Vehicle(x, y) {
 
     this.applyBehaviors = function(vehicles) {
 
-        var separateForce = this.separate(vehicles); // Separation
+        var separationForce = this.separate(vehicles); // Separation
         var alignForce = this.align(vehicles); // Alignment
         var cohesionForce = this.cohesion(vehicles); // Cohesion
         //var seekForce = this.seek(createVector(mouseX, mouseY));
 
         // weighting all the forces
-        separateForce.mult(slider1.value());
+        separationForce.mult(slider1.value());
         alignForce.mult(slider2.value());
         cohesionForce.mult(slider3.value());
         //seekForce.mult(slider2.value());
 
         // apply all the force vectors to the acceleration
-        this.applyForce(separateForce);
+        this.applyForce(separationForce);
         this.applyForce(alignForce);
         this.applyForce(cohesionForce);
         //this.applyForce(seekForce);
@@ -42,7 +46,7 @@ function Vehicle(x, y) {
     // Separation
     // Method checks for nearby vehicles and steers away
     this.separate = function(vehicles) {
-        var desiredseparation = slider3.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
+        var desiredseparation = 50; //slider3.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
         var sum = createVector();
         var count = 0;
         // For every boid in the system, check if it's too close
@@ -67,16 +71,16 @@ function Vehicle(x, y) {
             sum.normalize();
             sum.mult(this.maxspeed);
             // Implement Reynolds: Steering = Desired - Velocity
-            var steer = p5.Vector.sub(sum, this.velocity);
-            steer.limit(this.maxforce);
+            sum.sub(this.velocity);
+            sum.limit(this.maxforce);
         }
-        return steer;
+        return sum;
     }
 
     // Alignment
     // For every nearby vehicle in the system calcutates the average velocity
     this.align = function(vehicles) {
-        var neighbordist = 50; // slider3.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
+        var neighbordist = 50; // slider2.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
         var sum = createVector();
         var count = 0;
         // For every boid in the system, check if it's in the range
@@ -96,16 +100,16 @@ function Vehicle(x, y) {
             sum.normalize();
             sum.mult(this.maxspeed);
             // Implement Reynolds: Steering = Desired - Velocity
-            var steer = p5.Vector.sub(sum, this.velocity);
-            steer.limit(this.maxforce);
+            sum.sub(this.velocity);
+            sum.limit(this.maxforce);
         }
-        return steer;
+        return sum;
     }
 
     // Cohesion (stay together to an average center)
     // For the average location of all nearby neighbors, calculate the steering force
     this.cohesion = function(vehicles) {
-        var neighbordist = 50; // slider4.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
+        var neighbordist = 50; // slider3.value(); // SETTING THE ACTIVATION RANGE FOR THE BEAVIOR
         var sum = createVector();
         var count = 0;
         // For every boid in the system, check if it's in the range

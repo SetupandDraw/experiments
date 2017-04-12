@@ -1,54 +1,53 @@
-// in progress implementation of a flocking system based on The Nature of Code by Daniel Shiffman
-// http://natureofcode.com
-
-// Separation
-// Via Reynolds: http://www.red3d.com/cwr/steer/
+/*
+In progress implementation of a flocking system based on The Nature of Code by Daniel Shiffman
+http://natureofcode.com
+Simulating group behaviors by combining multiple steering behaviors according to local interactions between vehicles.
+more: Craig  Reynolds: http://www.red3d.com/cwr/steer/
+*/
 
 // A list of vehicles
 var vehicles = [];
 
 var slider1, slider2, slider3, slider4;
 
-var p1, p2, p3, text;
+var p1, p2, p3, mytext;
 
 function setup() {
-    createCanvas(640, 360);
+    createCanvas(windowWidth, 460);
     // We are now making random vehicles and storing them in an array
     for (var i = 0; i < 300; i++) {
         vehicles.push(new Vehicle(random(width), random(height)));
     }
-    createSpan('Separate Force');
-    slider1 = createSlider(0, 8, 4, 0.1); // separateForce
-    createSpan('Seek Force');
-    slider2 = createSlider(0, 8, 4, 0.1); // seekForce
-    createSpan('Desired Separation');
-    slider3 = createSlider(10, 160, 25); // desired separation
-    createSpan('desired separation');
-    slider4 = createSlider(0.5, 1.5, 1.22, 0.1); // controlling the size of my vehicles
+    createSpan('Separation');
+    slider1 = createSlider(0, 4, 1.5, 0.1); // separateForce
+    createSpan('Align');
+    slider2 = createSlider(0, 2, 1.0, 0.1); // alignForce
+    createSpan('Cohesion');
+    slider3 = createSlider(0, 2, 1.0, 0.1); // cohesionForce
+    //createSpan('desired separation');
+    //slider4 = createSlider(0.5, 1.5, 1.22, 0.1); // controlling the size of my vehicles
 
-    text = createP("Drag the mouse to generate new vehicles.");
+    mytext = createP("Drag the mouse to generate new vehicles.");
 
-    p1 = createP("Separate Force: " + slider1.value());
-    p2 = createP("Seek Force: " + slider2.value());
-    p3 = createP("Desired Separation: " + slider3.value());
+    p1 = createP("Separation Force: " + slider1.value());
+    p2 = createP("Align Force: " + slider2.value());
+    p3 = createP("Cohesion Force: " + slider3.value());
 
-    console.log(p1);
-    p1.id("myid");
 
     slider1.changed(function() {
-        doSomething(this, p1, "Separate Force: ");
+        updateText(this, p1, "Separation Force: ");
     });
     slider2.changed(function() {
-        doSomething(this, p2, "Seek Force: ");
+        updateText(this, p2, "Align Force: ");
     });
     slider3.changed(function() {
-        doSomething(this, p3, "Desired Separation: ");
+        updateText(this, p3, "Cohesion Force: ");
     });
-
+    /*
     slider4.input(function() {
         //scaleVheicles(this.value());
     });
-
+    */
 }
 
 function keyPressed() {
@@ -63,20 +62,20 @@ function keyPressed() {
     }
 }
 
-function doSomething(wslider, wparagraph, txt) {
-    //console.log(wparagraph); //console.log(wparagraph.elt.id);
+function updateText(wslider, wparagraph, txt) {
+    //console.log(wparagraph);
     /* for testing purposes only
     //console.log(wparagraph.elt.id);
     //var textmessage = document.getElementById(wparagraph.elt.id).innerHTML;
     //console.log(textmessage);
     */
-    wparagraph.html(txt + wslider.value());
+    wparagraph.html(mytxt + wslider.value());
 }
 
 function draw() {
     background(51);
     var performances = Math.round(frameRate());
-    text.html("Drag the mouse to generate new vehicles." + "    " + "Frame Rate: " + Math.round(frameRate()));
+    mytext.html("Drag the mouse to generate new vehicles." + "  //  " + "Frame Rate: " + Math.round(frameRate()) + "  //  " + "If less than 30fps some vehicles will be removed from the system.");
 
     for (var i = 0; i < vehicles.length; i++) {
         vehicles[i].applyBehaviors(vehicles);
@@ -85,7 +84,7 @@ function draw() {
         vehicles[i].display();
     }
 
-    if (performances < 40 && frameCount > 100) {
+    if (performances < 30 && frameCount > 100) {
         //console.log("removing vehicles. Vehicles num: " + vehicles.length);
         vehicles.splice(0, 1);
     }
@@ -94,4 +93,8 @@ function draw() {
 
 function mouseDragged() {
     vehicles.push(new Vehicle(mouseX, mouseY));
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, 460);
 }
