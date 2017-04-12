@@ -1,5 +1,5 @@
 /*
-In progress implementation of a flocking system based on The Nature of Code by Daniel Shiffman
+In progress Implementation of a flocking system based on The Nature of Code by Daniel Shiffman
 http://natureofcode.com
 Simulating group behaviors by combining multiple steering behaviors according to local interactions between vehicles.
 more: Craig  Reynolds: http://www.red3d.com/cwr/steer/
@@ -62,20 +62,20 @@ function keyPressed() {
     }
 }
 
-function updateText(wslider, wparagraph, txt) {
+function updateText(wslider, wparagraph, ttxt) {
     //console.log(wparagraph);
     /* for testing purposes only
     //console.log(wparagraph.elt.id);
     //var textmessage = document.getElementById(wparagraph.elt.id).innerHTML;
     //console.log(textmessage);
     */
-    wparagraph.html(mytxt + wslider.value());
+    wparagraph.html(ttxt + wslider.value());
 }
 
 function draw() {
     background(51);
     var performances = Math.round(frameRate());
-    mytext.html("Drag the mouse to generate new vehicles." + "  //  " + "Frame Rate: " + Math.round(frameRate()) + "  //  " + "If less than 30fps some vehicles will be removed from the system.");
+    mytext.html("Drag the mouse to generate new vehicles." + "  //  " + "Frame Rate: " + Math.round(frameRate()) + "  //  " + "If frame rate becomes ");
 
     for (var i = 0; i < vehicles.length; i++) {
         vehicles[i].applyBehaviors(vehicles);
@@ -96,5 +96,5 @@ function mouseDragged() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, 460);
+  resizeCanvas(windowWidth, 4);
 }
