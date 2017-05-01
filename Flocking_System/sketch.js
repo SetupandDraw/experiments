@@ -75,7 +75,7 @@ function updateText(wslider, wparagraph, ttxt) {
 function draw() {
     background(51);
     var performances = Math.round(frameRate());
-    mytext.html("Drag the mouse to generate new vehicles." + "  //  " + "Frame Rate: " + Math.round(frameRate()) + "  //  " + "If frame rate becomes ");
+    mytext.html("Drag the mouse to generate new vehicles." + "  //  " + "Frame Rate: " + Math.round(frameRate()) + "  //  " + "If frameRate gets too slow, vehicles will be deleted");
 
     for (var i = 0; i < vehicles.length; i++) {
         vehicles[i].applyBehaviors(vehicles);
