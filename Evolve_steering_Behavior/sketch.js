@@ -13,7 +13,7 @@ var poisonPieces = 20; // 20
 
 var timer;
 var nextTimer = 0;
-var lonRecord;
+var lonRecord = 0;
 
 var d = 25; // boundaries limith within the canvas borders
 var genCount = 0; // keep track of generations
@@ -41,7 +41,7 @@ function setup() {
 
 function draw() {
   background(51);
-  timer = round(millis()/1000) - nextTimer;
+  timer = round(millis() / 1000) - nextTimer;
   if (random(1) < 0.10) { //10% probability to drop more food
     food.push(createVector(random(width), random(height)));
   }
@@ -82,11 +82,11 @@ function draw() {
     }
   }
   fill(255);
-  text("Dynasty number: " +  genCount, 10, 30);
+  text("Dynasty number: " + genCount, 10, 30);
   text("Longevity score: " + timer, 10, 50);
-  if(genCount > 1){
-  fill(255, 100)
-  text("Longevity record: " + lonRecord, 10, 70);
+  if (genCount > 1) {
+    fill(255, 100)
+    text("Longevity record: " + lonRecord, 10, 70);
   }
 }
 
@@ -103,7 +103,10 @@ function keyPressed() {
 
 function regenerate(champion) {
   console.log("repopulating");
-  lonRecord = timer;
+  var newRecord = timer;
+  if (newRecord > lonRecord) {
+    lonRecord = timer;
+  }
   nextTimer = timer;
   for (n = 0; n < vehiclesNum; n++) {
     vehicles.push(champion.repopulate());
