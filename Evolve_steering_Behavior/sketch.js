@@ -76,7 +76,7 @@ function draw() {
     }
   }
   fill(255);
-  text("Generation: " + + genCount, 10, 30);
+  text("Dynasty: " + + genCount, 10, 30);
 }
 
 function mousePressed() {
