@@ -1,14 +1,19 @@
-// @SetupDraw first implementation of Daniel Shiffman's Evolve_Steering_Behaviors
-// nex generation automation based on vehicles' healthiest survivor + some fine tinuning to the genetic algorithm
-// press alt for switch debug on/off
-// mouse press for adding new vehicles
+/* @SetupDraw first implementation of Daniel Shiffman's Evolve_Steering_Behaviors
+A new "dynasty" is added to the system automatically when there are no vehicles left. The new dynasty will be based on prev generation champion’s DNA. Probability of reproduction also related to a requested minimum health value.
+Press CTRL to toggle debug on/off.
+Mouse press for adding new vehicles.
+*/
 
 var vehicles = [];
 var vehiclesNum = 10;
 var food = [];
 var poison = [];
-var foodPieces = 40;
-var poisonPieces = 20;
+var foodPieces = 40; // 40
+var poisonPieces = 20; // 20
+
+var timer;
+var nextTimer = 0;
+var lonRecord;
 
 var d = 25; // boundaries limith within the canvas borders
 var genCount = 0; // keep track of generations
@@ -18,6 +23,7 @@ var debug = true;
 function setup() {
   //var canvas = createCanvas(800, 600);
   createCanvas(windowWidth, windowHeight);
+
   for (var i = 0; i < vehiclesNum; i++) {
     vehicles[i] = new Vehicle(random(d * 2, width - d * 2), random(d * 2, height - d * 2));
   }
@@ -35,7 +41,7 @@ function setup() {
 
 function draw() {
   background(51);
-
+  timer = round(millis()/1000) - nextTimer;
   if (random(1) < 0.10) { //10% probability to drop more food
     food.push(createVector(random(width), random(height)));
   }
@@ -76,7 +82,12 @@ function draw() {
     }
   }
   fill(255);
-  text("Dynasty: " + + genCount, 10, 30);
+  text("Dynasty number: " +  genCount, 10, 30);
+  text("Longevity score: " + timer, 10, 50);
+  if(genCount > 1){
+  fill(255, 100)
+  text("Longevity record: " + lonRecord, 10, 70);
+  }
 }
 
 function mousePressed() {
@@ -92,6 +103,8 @@ function keyPressed() {
 
 function regenerate(champion) {
   console.log("repopulating");
+  lonRecord = timer;
+  nextTimer = timer;
   for (n = 0; n < vehiclesNum; n++) {
     vehicles.push(champion.repopulate());
   }
