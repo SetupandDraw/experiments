@@ -14,6 +14,7 @@ var poisonPieces = 20; // 20
 var timer;
 var nextTimer = 0;
 var lonRecord = 0;
+var tamagotchiMode = false;
 
 var d = 25; // boundaries limith within the canvas borders
 var genCount = 0; // keep track of generations
@@ -42,12 +43,14 @@ function setup() {
 function draw() {
   background(51);
   timer = round(millis() / 1000) - nextTimer;
-  if (random(1) < 0.10) { //10% probability to drop more food
-    food.push(createVector(random(width), random(height)));
-  }
+  if (!tamagotchiMode) {
+    if (random(1) < 0.10) { //10% probability to drop more food
+      food.push(createVector(random(width), random(height)));
+    }
 
-  if (random(1) < 0.01) { //1% probability to drop more poison
-    poison.push(createVector(random(width), random(height)));
+    if (random(1) < 0.01) { //1% probability to drop more poison
+      poison.push(createVector(random(width), random(height)));
+    }
   }
 
   for (var i = 0; i < food.length; i++) {
@@ -81,23 +84,43 @@ function draw() {
       vehicles.splice(i, 1);
     }
   }
-  fill(255);
-  text("Dynasty number: " + genCount, 10, 30);
-  text("Longevity score: " + timer, 10, 50);
+  fill(255, 100);
+  text("Press CTRL to toggle debug on/off - MousePress to add new vehicles", 10, 30);
+  if (!tamagotchiMode) {
+    fill(255, 100);
+    text("Press ALT to enter 'tamagotchi mode'" , 10, 50);
+  } else {
+    fill(255, 255);
+    text("MousePress + 'F' to add food - MousePress + 'P' to add poison. Press ALT to exit 'tamagotchi mode'", 10, 50);
+  }
+  fill(255, 255);
+  text("Dynasty number: " + genCount, 10, 70);
+  text("Longevity score: " + timer, 10, 90);
   if (genCount > 1) {
     fill(255, 100)
-    text("Longevity record: " + lonRecord, 10, 70);
+    text("Longevity record: " + lonRecord, 10, 110);
   }
 }
 
 function mousePressed() {
-  vehicles.push(new Vehicle(mouseX, mouseY));
+  if (tamagotchiMode && keyIsPressed === true && key === 'f') { // f
+    food.push(createVector(mouseX, mouseY));
+    console.log("adding food");
+  } else if (tamagotchiMode && keyIsPressed === true && key === 'p') { // p
+    poison.push(createVector(mouseX, mouseY));
+    console.log("adding poison");
+  } else {
+    vehicles.push(new Vehicle(mouseX, mouseY));
+  }
 }
 
 function keyPressed() {
   if (keyCode == CONTROL) {
     debug = !debug;
     console.log(debug);
+  } else if (keyCode == ALT) {
+    tamagotchiMode = !tamagotchiMode;
+    console.log(tamagotchiMode);
   }
 }
 
@@ -123,7 +146,7 @@ function regenerate(champion) {
   }
   */
   genCount += 1;
-  console.log("Generation: " + genCount);
+  console.log("Dynasty: " + genCount);
 };
 
 function windowResized() {
