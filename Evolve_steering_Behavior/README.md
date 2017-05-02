@@ -2,7 +2,7 @@
 https://github.com/shiffman/NOC-S17-2-Intelligence-Learning
 
 
-Next generation (or better a next dynasty), is added to the system automatically when there are no vehicles left. New generation will be based on prev generation champion’s DNA. Probability of reproduction also related to a requested minimum health value.
+A new "dynasty" is added to the system automatically when there are no vehicles left. The new dynasty will be based on prev generation champion’s DNA. Probability of reproduction also related to a requested minimum health value.
 
 // press ctrl for switch debug on/off
 // mouse press for adding new vehicles
