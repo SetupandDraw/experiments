@@ -75,6 +75,8 @@ function draw() {
       vehicles.splice(i, 1);
     }
   }
+  fill(255);
+  text("Generation: " + + genCount, 10, 30);
 }
 
 function mousePressed() {
