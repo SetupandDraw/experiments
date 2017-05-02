@@ -130,7 +130,7 @@ function regenerate(champion) {
   if (newRecord > lonRecord) {
     lonRecord = timer;
   }
-  nextTimer = timer;
+  nextTimer += timer;
   for (n = 0; n < vehiclesNum; n++) {
     vehicles.push(champion.repopulate());
   }
