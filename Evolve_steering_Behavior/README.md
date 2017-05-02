@@ -6,4 +6,5 @@ A new "dynasty" is added to the system automatically when there are no vehicles 
 
 // press ctrl for switch debug on/off
 // mouse press for adding new vehicles
+// press ALT toggle 'tamagotchi mode' ON/OFF (if ON MousePress + 'F' to add food - MousePress + 'P' to add poison)
 
